@@ -1,0 +1,13 @@
+.logo-text {
+    text-align: center;
+    color: #00f;
+}
+body {
+    font-family: 'Comic Sans MS';
+}
+.topbar {
+    text-align: right;
+}
+a {
+    margin: 20px;
+}

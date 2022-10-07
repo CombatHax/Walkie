@@ -1,0 +1,19 @@
+.round {
+    border-radius: 5px;
+    box-shadow: 10px 5px 5px #101010;
+}
+.centered {
+    text-align: center;
+}
+.infields {
+    padding: 10px 15px 10px 15px;
+    cursor: crosshair;
+}
+input {
+    padding: 5px 10px;
+    margin: 5px;
+    box-shadow:0 0 15px 4px rgba(0, 0, 0, 0.1);
+}
+.red {
+    color: red;
+}
