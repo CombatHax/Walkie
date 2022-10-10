@@ -5,14 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="univ.css">
+    <link rel="stylesheet" href="talk.css">
     <title>Walkie Talkie</title>
 </head>
 <body>
+    <div class="cur_mes">
+        <p id="cur_mes" class="mes"></p>
+    </div>
     <ul class="lnone" id="messages"></ul>
     <script>
         if(localStorage.getItem("UUID") == null) {
             location.assign("signin.html");
         }
     </script>
+    <script src="js/talk.js"></script>
 </body>
 </html>

@@ -43,18 +43,27 @@ const server = http.createServer((req, res) => {
     })
 })
 const wss = new WebSocket.Server({server:server});
+const userUUID = uuid => {
+    const cur_json = JSON.parse(fs.readFileSync("signin.json").toString());
+    for(user of cur_json["Users"]) {
+        if(user["I"] == uuid) {
+            return user["U"];
+        }
+    }
+    return null;
+}
 wss.on("connection", ws => {
     ws.on("message", data => {
         const json = JSON.parse(data.toString());
+        let cur_json_buff = fs.readFileSync("signin.json");
+        let cur_json = JSON.parse(cur_json_buff.toString());
+        const users = cur_json["Users"];
         switch(json[0]) {
             case "SIGNUP":
-                let cur_json_buff = fs.readFileSync("signin.json");
-                let cur_json = JSON.parse(cur_json_buff.toString());
                 const info = json[1]["info"];
                 const user = info["Username"];
                 const pass = info["Password"];
                 const uuid = uuider();
-                const users = cur_json.Users;
                 let bool = true;
                 for(const el of users) {
                     if(el['U'] === user) {
@@ -77,9 +86,27 @@ wss.on("connection", ws => {
                 }
                 break;
             case "SIGNIN":
-                const file = JSON.parse(fs.readFileSync("signin.json").toString());
-                const peeps = file["Users"];
-                console.log(peeps);
+                console.log(json[1]);
+                for(const peep of users) {
+                    const it = json[1][peep["U"]];
+                    if(it) {
+                        if(it == peep["P"]) {
+                            ws.send(JSON.stringify(["SIGNIN_SUC", peep["I"]]));
+                            return;
+                        }
+                    }
+                    ws.send(JSON.stringify(["SIGNIN_FAL"]));
+                }
+                break;
+            case "SEND_MES":
+                console.log(json[1]);
+                const person = userUUID(json[1]["I"]);
+                if(person) {
+                    console.log(`Broadcasting: ${json[1]["M"]}\nFrom: ${person}`);
+                    wss.clients.forEach(val => {
+                        val.send(JSON.stringify(["DIS_MES", {"U": person, "M": json[1]["M"]}]))
+                    })
+                }
         }
     })
 })

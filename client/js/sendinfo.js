@@ -1,4 +1,4 @@
-const ws = new WebSocket("ws://74.77.166.146:12345");
+const ws = new WebSocket(`ws://${location.host}`);
 ws.addEventListener("message", ev => {
     const json_info = JSON.parse(ev.data);
     switch(json_info[0]) {
